@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% include "./common/navbar.html" %}
+{% include "./blog/deletepost.html" %}
+
+{% block content %}
+
+	<div class="row">
+		<div class="col-xs-offset-3 col-xs-9">
+			<h3><a href="/"> {{ post.subject }} </a></h3>
+		</div>
+	</div>
+    <br>
+    <div class=col-xs-offset-3>
+	    <div class="row">
+		    <div class="col-xs-8">
+			    <p class="data">{{post.content | safe}} </p>
+		    
+	            {% include "./common/published_time.html" %}
+	            <br>
+	            {% include "./common/like_comment_btn.html" %}
+                <br>
+	            {% include "./comment/commentpost.html" %}
+	            {% include "./comment/commentslist.html" %}
+	
+            </div>
+	    </div>
+    </div>
+{% endblock %}

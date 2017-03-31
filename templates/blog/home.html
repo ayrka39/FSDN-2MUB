@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% include "./common/navbar.html" %}
+
+{% block content %}
+    <div class="row">
+		<div class="col-xs-offset-3 col-xs-8">
+			<h1>Lorem ipsum dolor sit amet</h1>
+		</div>
+	</div>
+	<br><br>
+
+{% for post in posts %}
+    <div class="col-xs-offset-3 id="{{post.key().id()}}">
+	    <div class="row">
+		    <div class="col-xs-8">
+			    <h3><a href="/post/{{post.key().id()}}"> {{
+					post.subject }} </a></h3>
+				<br>
+			    <p class="data">{{post.content | safe}} </p>
+			    <br>
+			    {% include "./common/published_time.html" %}
+		        <br>
+		         {% include "./common/edit_del_btn.html" %}
+		        <a href="/post/{{post.key().id()}}">Read more</a>
+		        <br>
+		    </div>
+	    </div>
+    </div>
+    <br><br>
+{% endfor %}
+{% endblock %}
+

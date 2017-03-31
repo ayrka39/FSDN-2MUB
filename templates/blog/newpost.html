@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% include "./common/navbar.html" %}
+
+{% block content %}
+    <div class="row">
+		<div class="col-xs-offset-3 col-xs-8">
+			<h1>Write Your Story</h1>
+		</div>
+	</div>
+	<br><br>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-offset-1 col-sm-11">
+			<form class="form-horizontal" method="POST">
+				<div class="form-group">
+					<label for="inputsubject" class="control-label col-sm-2">Subject</label>
+					<div class="col-sm-7">
+						<input class="form-control" placeholder="Subject" type="text" name="subject" value="{{ subject }}"/>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="inputContent" class="control-label col-sm-2">Content</label>
+					<div class="col-sm-7">
+						<textarea name="content" placeholder="Write something...anything." class="form-control" rows="20">{{content | safe}}</textarea>
+					</div>
+				</div>
+				<br>
+
+				<div class="col-xs-offset-2 col-xs-12">
+					<p class="alert-danger">{{post_error}}</p>
+					<input type="submit" class="btn btn-primary" value="Publish">
+					<input type="submit" class="btn btn-primary" name="cancel" value="Cancel">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

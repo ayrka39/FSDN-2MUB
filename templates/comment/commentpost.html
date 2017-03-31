@@ -1,0 +1,30 @@
+{% if user %}
+	<form method="POST">
+		<div class="row">
+			<div class="col-xs-12">
+				<h5>What do you think?</h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<textarea name="comment_text" class="form-control" rows="4">
+				{{comment_text | safe}}
+				</textarea>
+			</div>
+		</div>
+		<span class="alert-danger">{{comment_error}}</span>
+		<br>
+		<div class="row">
+			<div class="col-xs-2">
+				<button type="submit" class="btn btn-primary" name="add_comment" value="Post"> Post </button>
+			</div>
+		</div>
+	</form>
+{% else %}
+	<div class="row">
+		<div class="col-xs-12">
+			<small><a href="/signup"> Sign up </a> or <a href="/login"> Login</a> to comment on or like this post!</small>
+		</div>
+	</div>
+{% endif %}
+	

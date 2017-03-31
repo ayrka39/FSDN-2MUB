@@ -1,0 +1,59 @@
+<div class="row">
+	<div class="col-xs-8">
+		{% if user.name == post.user.name %}
+		
+		<button type="button" class="btn btn-default disabled" aria-label="Left Align">
+			🖤
+		</button>
+
+		{% elif user.name %}
+		<form method="POST">
+		<input type="submit" class="btn btn-default" name='like' value='🖤'>
+		
+
+		{% else %}
+		<a href="/login">
+			<button type="button" class="btn btn-default" aria-label="Left Align">
+				🖤
+			</button>
+		</a>
+
+		{% endif %}
+
+		<span id="{{ post.key().id()}}">{{ likes }}</span>
+        
+        {% if user.name %}
+		<a href="/post/{{post.key().id()}}">
+			<button type="button" class="btn btn-default" aria-label="Left Align">
+				  ✍🏽
+			</button>
+		</a>
+        
+        {% else %}
+        <a href="/login">
+			<button type="button" class="btn btn-default" aria-label="Left Align">
+				  ✍🏽
+			</button>
+		</a>
+		
+		{% endif %}
+		
+		<span>{{comments_count}}</span>
+        </form>
+        <span class="alert-danger">{{error}}</span>
+        
+		{% if user.name == post.user.name %}
+		<a href="/edit/{{post.key().id()}}">
+			<button type="button" class="btn btn-default" aria-label="Left Align">
+				<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+			</button>
+		</a>
+		<a href="#" data-toggle="modal" data-target="#deleteModal">
+		    <button type="button" class="btn btn-default" aria-label="Left Align">
+			    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		    </button> 
+		</a>
+		{% endif %} 
+		
+	</div>
+</div>

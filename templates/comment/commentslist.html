@@ -1,0 +1,43 @@
+<div id="comments">
+	{% if post_comments %} 
+
+		{% for comment in post_comments %}
+			<div id="{{comment.key().id()}}" class="well">
+
+				<div class="row">
+					<div class="col-xs-6">
+						<small><strong>{{comment.user.name}}</strong> says:</small>
+					</div>
+					<div class="col-xs-6 text-right" id="{{comment.key().id()}}">
+						<small>{{comment.created.strftime('%b %d,  %Y %I:%M %p')}}</small>
+					</div>
+				</div>
+                <br>
+				<div class="row">
+					<div class="col-xs-12">
+						<p class="data" id="{{comment.key().id()}}">{{comment.text}}</p>
+					</div>
+				</div>
+                
+				{% if comment.user.name == user.name %}
+					<div class="row">
+						<div class="col-xs-4">
+						<a href="/blog/{{post.key().id()}}/editcomment/{{comment.key().id()}}">
+							<button type="button" class="btn btn-default" aria-label="Left Align">
+								<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+							</button>
+						</a>
+						<a href="/blog/{{post.key().id()}}/deletecomment/{{comment.key().id()}}">
+							<button type="button" class="btn btn-default" aria-label="Left Align">
+								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+							</button>
+						</a>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+
+		{% endfor %}
+
+	{% endif %}
+</div>

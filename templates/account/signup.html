@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% include "./common/navbar_s.html" %}
+
+{% block content %}
+<br><br>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-offset-3 col-xs-6 loginblock">
+				<form class="form-horizontal" method="POST">
+					<div class="form-group">
+						<label for="inputName" class="control-label col-md-2">Username</label>
+						<div class="col-md-8">
+							<input class="form-control" placeholder="User Name" type="text" name="username" value="{{username}}" required />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="inputPassword" class="control-label col-md-2">Password</label>
+						<div class="col-md-8">
+							<input class="form-control" placeholder="Password" type="password" name="password" required/>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="inputRetype" class="control-label col-md-2">Retype Password</label>
+						<div class="col-md-8">
+							<input class="form-control" placeholder="Retype Password" type="password" name="verify" required />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="inputEmail" class="control-label col-md-2">Email</label>
+						<div class="col-md-8">
+							<input class="form-control" placeholder="Email (optional)" type="email" name="email" value="{{email}}" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-12">
+							<p class="alert-danger"> {{error_username}}{{error_password}}{{error_verify}} </p>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-10">
+							<button type="submit" class="btn btn-primary">Sign Up</button>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-md-offset-2 col-md-10">
+							<a href="/login"><small>Already registered? Sign in here</small></a>
+						</div>
+					</div>
+				</form>      
+			</div>
+		</div>
+	</div>
+{% endblock %}
