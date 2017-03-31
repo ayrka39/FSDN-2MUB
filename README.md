@@ -12,5 +12,5 @@ Once installed, clone this repo and run it with the following command:
 dev_appserver.py app.yaml
 ```
 
-or try to visit [here]()
+or try to visit [here](https://multiuserblog-156514.appspot.com)
 
