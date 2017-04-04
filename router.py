@@ -10,15 +10,14 @@ from app.blogpost import EditPost
 from app.comment import DeleteComment
 from app.comment import EditComment
 
-
 app = webapp2.WSGIApplication([
-    ('/', MainPage), 
+    ('/', MainPage),
     ('/newpost', NewPost),
-    ('/post/([0-9]+)', BlogPost), 
+    ('/post/([0-9]+)', BlogPost),
     ('/login', Login),
-    ('/logout', Logout), 
-    ('/signup', Register), 
-    ('/edit/([0-9]+)', EditPost), 
+    ('/logout', Logout),
+    ('/signup', Register),
+    ('/edit/([0-9]+)', EditPost),
     ('/delete/([0-9]+)', DeletePost),
     ('/blog/([0-9]+)/editcomment/([0-9]+)', EditComment),
     ('/blog/([0-9]+)/deletecomment/([0-9]+)', DeleteComment),

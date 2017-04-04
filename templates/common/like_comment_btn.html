@@ -20,7 +20,7 @@
 
 		{% endif %}
 
-		<span id="{{ post.key().id()}}">{{ likes }}</span>
+		<span id="/like/{{ post.key().id()}}">{{ likes }}</span>
         
         {% if user.name %}
 		<a href="/post/{{post.key().id()}}">

@@ -9,6 +9,7 @@ from models.user import User
 
 class BlogPost(Handler):
 
+    @login_required
     def get(self, blog_id):
         # get the key for the blog post
         key = db.Key.from_path("Blog", int(blog_id), parent=blog_key())
@@ -25,6 +26,7 @@ class BlogPost(Handler):
             post_comments=post_comments,
             comments_count=comments_count)
 
+    @login_required
     def post(self, blog_id):
         # get all the necessary parameters
         key = db.Key.from_path("Blog", int(blog_id), parent=blog_key())
@@ -35,109 +37,100 @@ class BlogPost(Handler):
         likes = Like.by_blog_id(post)
         previously_liked = Like.check_like(post, user_id)
 
-        # check if the user is logged in
-        if self.user:
-            # if the user clicks on like
-            if self.request.get("like"):
-                # first check if the user is trying to like his own post
-                if post.user.key().id() != User.by_name(self.user.name).key().id():
-                    # then check if the user has liked this post before
-                    if previously_liked == 0:
-                        # add like to the likes database and refresh the page
-                        l = Like(
-                            post=post, user=User.by_name(
-                                self.user.name))
-                        l.put()
-                        time.sleep(0.1)
-                        self.redirect('/post/%s' % str(post.key().id()))
-
-                    else:
-                        error = "You have already liked this post"
-                        self.render(
-                            "./blog/blogpost.html",
-                            post=post,
-                            likes=likes,
-                            error=error,
-                            comments_count=comments_count,
-                            post_comments=post_comments)
-
-                else:
-                    error = "You cannot like your own posts"
-                    self.render(
-                        "./blog/blogpost.html",
-                        post=post,
-                        likes=likes,
-                        error=error,
-                        comments_count=comments_count,
-                        post_comments=post_comments)
-           
-            # if the user clicks on add comment get the comment text first
-            if self.request.get("add_comment"):
-                comment_text = self.request.get("comment_text")
-                # check if there is anything entered in the comment text area
-                if comment_text:
-                    # add comment to the comments database and refresh page
-                    c = Comment(
-                        post=post, user=User.by_name(
-                            self.user.name), text=comment_text)
-                    c.put()
+        # if the user clicks on like
+        if self.request.get("like"):
+            # first check if the user is trying to like his own post
+            if post.user.key().id() != user_id.key().id():
+                # then check if the user has liked this post before
+                if previously_liked == 0:
+                    # add like to the likes database and refresh the page
+                    l = Like(
+                    post=post, user=User.by_name(
+                    self.user.name))
+                    l.put()
                     time.sleep(0.1)
                     self.redirect('/post/%s' % str(post.key().id()))
 
                 else:
-                    comment_error = "Please enter a comment in the text area to post"
+                    error = "You have already liked this post"
                     self.render(
-                        "./blog/blogpost.html",
-                        post=post,
-                        likes=likes,
-                        comments_count=comments_count,
-                        post_comments=post_comments,
-                        comment_error=comment_error)
-           
-        # otherwise if the user is not logged in take them to the login page
-        else:
-            self.redirect("/login")
+                    "./blog/blogpost.html",
+                    post=post,
+                    likes=likes,
+                    error=error,
+                    comments_count=comments_count,
+                    post_comments=post_comments)
+
+            else:
+                error = "You cannot like your own posts"
+                self.render(
+                "./blog/blogpost.html",
+                post=post,
+                likes=likes,
+                error=error,
+                comments_count=comments_count,
+                post_comments=post_comments)
+
+        # if the user clicks on add comment get the comment text first
+        if self.request.get("add_comment"):
+            comment_text = self.request.get("comment_text")
+            # check if there is anything entered in the comment text area
+            if comment_text:
+                # add comment to the comments database and refresh page
+                c = Comment(
+                    post=post, user=User.by_name(
+                        self.user.name), text=comment_text)
+                c.put()
+                time.sleep(0.1)
+                self.redirect('/post/%s' % str(post.key().id()))
+
+            else:
+                comment_error = "Please enter a comment in the text area."
+                self.render(
+                    "./blog/blogpost.html",
+                    post=post,
+                    likes=likes,
+                    comments_count=comments_count,
+                    post_comments=post_comments,
+                    comment_error=comment_error)
 
 
 class DeletePost(Handler):
 
+    @login_required
     def get(self, blog_id):
         key = db.Key.from_path("Blog", int(blog_id), parent=blog_key())
         post = db.get(key)
+        user_id = User.by_name(self.user.name)
 
         # check if this user is the author of this post
-        if post.user.key().id() == User.by_name(self.user.name).key().id():
+        if post.user.key().id() == user_id.key().id():
             db.delete(key)
             time.sleep(0.1)
-            self.redirect('/') 
-
-        else:
-            self.redirect("/login")
+            self.redirect('/')
 
 
 class EditPost(Handler):
 
+    @login_required
     def get(self, blog_id):
         key = db.Key.from_path("Blog", int(blog_id), parent=blog_key())
         post = db.get(key)
+        user_id = User.by_name(self.user.name)
 
-        # check if the user is logged in
-        if self.user:
-            # check if this user is the author of this post
-            if post.user.key().id() == User.by_name(self.user.name).key().id():
-                self.render("./blog/editpost.html", post=post)
-            
-            else:
-                self.response.out.write("You cannot edit other user's posts")
-        
+        # check if this user is the author of this post
+        if post.user.key().id() == user_id.key().id():
+            self.render("./blog/editpost.html", post=post)
+
         else:
-            self.redirect("/login")
+            self.response.out.write("You cannot edit other user's posts")
 
+    @login_required
     def post(self, blog_id):
 
         key = db.Key.from_path("Blog", int(blog_id), parent=blog_key())
         post = db.get(key)
-
+        user_id = User.by_name(self.user.name)
         # if the user clicks on update comment
         if self.request.get("update"):
 
@@ -145,7 +138,7 @@ class EditPost(Handler):
             subject = self.request.get("subject")
             content = self.request.get("content").replace('\n', '<br>')
 
-            if post.user.key().id() == User.by_name(self.user.name).key().id():
+            if post.user.key().id() == user_id.key().id():
                 # check if both the subject and content are filled
                 if subject and content:
                     # update the blog post and redirect to the post page
@@ -154,7 +147,7 @@ class EditPost(Handler):
                     post.put()
                     time.sleep(0.1)
                     self.redirect('/post/%s' % str(blog_id))
-            
+
                 else:
                     post_error = "No black fields, please!"
                     self.render(
@@ -165,5 +158,3 @@ class EditPost(Handler):
 
             else:
                 self.response.out.write("You can only edit your own posts.")
-
-            

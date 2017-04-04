@@ -12,7 +12,6 @@ class Blog(db.Model):
                                 required=True,
                                 collection_name="blogs")
 
-    # show line breaks in blog content correctly when page is rendered
     def render(self):
         self._render_text = self.content.replace('\n', '<br>')
         return render_str("./blog/blogpost.html", post=self)

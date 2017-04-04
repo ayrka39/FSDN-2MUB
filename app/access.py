@@ -21,7 +21,7 @@ class Login(Handler):
             # login and redirect to the welcome page
             self.login(u)
             self.redirect('/')
-        
+
         else:
             error = 'Invalid login'
             self.render('./account/login.html', error=error)

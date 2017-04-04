@@ -9,14 +9,14 @@ class Comment(db.Model):
     created = db.DateTimeProperty(auto_now_add=True)
     text = db.TextProperty(required=True)
 
-    # get number of comments for a blog id
     @classmethod
     def count_by_blog_id(cls, blog_id):
+        """ get number of comments for a blog id """
         c = Comment.all().filter('post =', blog_id)
         return c.count()
 
-    # get all comments for a specific blog id
     @classmethod
     def all_by_blog_id(cls, blog_id):
+        """ get all comments for a specific blog id """
         c = Comment.all().filter('post =', blog_id).order('created')
         return c

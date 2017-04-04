@@ -56,7 +56,7 @@ class Register(Signup):
         if u:
             error = 'That user already exists.'
             self.render('./account/signup.html', error_username=error)
-        
+
         else:
             u = User.register(self.username, self.password, self.email)
             u.put()
